@@ -5,6 +5,8 @@ set ttyfast
 set lazyredraw
 
 let g:ruby_path="~/.rvm/bin/ruby"
+let g:golang_goroot = "/Development/ProgramFiles/go"
+
 
 " have jsx highlighting/indenting work in .js files as well
 let g:jsx_ext_required = 0
@@ -60,6 +62,9 @@ cabbrev tn tabnext
 cabbrev tf tabfirst
 cabbrev tl tablast
 
+
+let g:neocomplete#enable_at_startup = 1
+
 set backspace=2   " Backspace deletes like most programs in insert mode
 set nocompatible  " Use Vim settings, rather then Vi settings
 set nobackup
@@ -93,6 +98,11 @@ augroup vimrcEx
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
+  
+  autocmd FileType go autocmd BufWritePre <buffer> Fmt
+
+  autocmd FileType go compiler golang
+
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it for commit messages, when the position is invalid, or when
@@ -155,8 +165,14 @@ set t_Co=256
 :set noantialias
 
 " Color scheme
-colorscheme vim-hybrid
+let g:hybrid_custom_term_colors = 1
+let g:molokai_original = 1
+let g:rehash256 = 1
+let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
+colorscheme molokai
+"syntax enable
 set background=dark
+"colorscheme solarized
 set encoding=utf-8
 
 " Highlight line number of where cursor currently is
@@ -344,7 +360,7 @@ highlight link SyntasticStyleWarningSign SignColumn
 
 " Buffer
 set hidden
-set autoread 
+set autoread
 set autowriteall
 
 
@@ -352,7 +368,7 @@ set autowriteall
 set scrolloff=10
 set scrolljump=5
 
-" search 
+" search
 set ignorecase
 set smartcase
 set incsearch     " do incremental searching
@@ -436,7 +452,7 @@ call matchadd('ColorColumn', '\%81v', 100)
 " Numbers
 set number
 set numberwidth=5
-set relativenumber  
+set relativenumber
 
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
