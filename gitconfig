@@ -1,7 +1,10 @@
+[user]
+  name = Tharindu Munasinghe
+  email = munasinghetharindu@gmail.com
 [push]
   default = current
 [color]
-  ui = auto
+	ui = true
 [alias]
   aa = add --all
   ap = add --patch
@@ -14,6 +17,15 @@
   pr = !hub pull-request
   st = status
   up = !git fetch origin && git rebase origin/master
+  find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
+  show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
+  lg1 = log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+  lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  lg = !"git lg1"
+  #git://192.168.43.105/
+  serve = daemon --verbose --enable=upload-pack --enable=receive-pack --export-all --base-path=.git --reuseaddr --strict-paths .git/
+  filelog = log -u
+  st = !"git status"
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -24,8 +36,8 @@
 [commit]
 	template = /Users/mike/.gitmessage
 [user]
-  name = Mike Coutermarsh
-  email = coutermarsh.mike@gmail.com
+	name = Tharindu Munasinghe
+	email = tharindu.munasinghe@trycake.com
 [diff]
     tool = Kaleidoscope
 [difftool "Kaleidoscope"]
