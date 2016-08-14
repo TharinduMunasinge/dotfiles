@@ -7,6 +7,7 @@ set lazyredraw
 let g:ruby_path="~/.rvm/bin/ruby"
 let g:golang_goroot = "/Development/ProgramFiles/go"
 
+set term=xterm-256color
 
 " have jsx highlighting/indenting work in .js files as well
 let g:jsx_ext_required = 0
@@ -17,6 +18,9 @@ let $PATH='/usr/local/bin:' . $PATH
 
 " Sessions
 let g:session_autoload = 'no'
+
+
+set guifont=Liberation\ Mono\ for\ Powerline\ 10
 
 " Leader Mappings
 map <Space> <leader>
@@ -98,7 +102,7 @@ augroup vimrcEx
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
-  
+
   autocmd FileType go autocmd BufWritePre <buffer> Fmt
 
   autocmd FileType go compiler golang
@@ -152,12 +156,32 @@ if executable('ag')
 endif
 
 " Airline
-let g:airline_powerline_fonts = 1
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-let g:airline_symbols.space = "\ua0"
-let g:airline_theme='solarized'
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tmuxline#enabled = 0
+
+let g:airline_theme='molokai'
+"'solarized'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.crypt = '🔒'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = '☰'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.spell = 'Ꞩ'
+let g:airline_symbols.notexists = '∄'
+let g:airline_symbols.whitespace = ' '
+
 set t_Co=256
 
 :set smartcase
@@ -165,12 +189,20 @@ set t_Co=256
 :set noantialias
 
 " Color scheme
+"set background=dark
+"solarized options
+"let g:solarized_visibility = "high"
+"let g:solarized_contrast = "high"
+"let g:solarized_termcolors=256
+"colorscheme moloki
+let g:Powerline_symbols = 'fancy'
 let g:hybrid_custom_term_colors = 1
 let g:molokai_original = 1
 let g:rehash256 = 1
 let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
+let g:molokai_termcolors=256
 colorscheme molokai
-"syntax enable
+syntax enable
 set background=dark
 "colorscheme solarized
 set encoding=utf-8
@@ -311,10 +343,6 @@ nmap <F8> :TagbarToggle<CR>
 " mouse support for scrolling
 set mouse=a
 
-" airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
 " easy motion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
@@ -328,8 +356,8 @@ let g:EasyMotion_do_mapping = 0 " Disable default mappings
  " JK motions: Line motions
  map <Leader>j <Plug>(easymotion-j)
  map <Leader>k <Plug>(easymotion-k)
-
-
+ map <Leader>L <Plug>(easymotion-bd-jk)
+ map <Leader>w <Plug>(easymotion-bd-w)
 
 " ctags
 filetype plugin on
