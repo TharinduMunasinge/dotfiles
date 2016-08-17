@@ -67,7 +67,7 @@ cabbrev tf tabfirst
 cabbrev tl tablast
 
 
-let g:neocomplete#enable_at_startup = 1
+let g:complete#enable_at_startup = 1
 
 set backspace=2   " Backspace deletes like most programs in insert mode
 set nocompatible  " Use Vim settings, rather then Vi settings
@@ -222,12 +222,15 @@ set undodir=~/.vim/undo/
 set undofile
 set undolevels=1000
 set undoreload=10000
-
+set nossl
 :nnoremap <expr> y (v:register ==# '"' ? '"+' : '') . 'y'
 :nnoremap <expr> yy (v:register ==# '"' ? '"+' : '') . 'yy'
 :nnoremap <expr> Y (v:register ==# '"' ? '"+' : '') . 'Y'
 :xnoremap <expr> y (v:register ==# '"' ? '"+' : '') . 'y'
 :xnoremap <expr> Y (v:register ==# '"' ? '"+' : '') . 'Y'
+"nmap oo o<Esc>k
+nmap <C-O> O<Esc>
+nmap <CR> o<Esc>
 
 " convert hash rockets
 nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
@@ -237,6 +240,14 @@ nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
 " will use completion if not at beginning
 set wildmode=list:longest,list:full
 set complete=.,w,t
+set completeopt=longest,menuone
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+  "\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+"inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+  "\ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
 function! InsertTabWrapper()
     let col = col('.') - 1
     if !col || getline('.')[col - 1] !~ '\k'
@@ -246,6 +257,8 @@ function! InsertTabWrapper()
     endif
 endfunction
 inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+"inoremap <expr> <silent> <cr> pumvisible() ? "<c-y>" : "<cr>"
+
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
@@ -320,7 +333,8 @@ command! AC :call <SID>CreateRelated()
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
-
+let g:ycm_key_select_completion = '<tab>'
+let g:ycm_min_num_of_chars_for_completion=2
 
 " Utilsnipperts
 let g:UltiSnipsExpandTrigger = "<tab>"
@@ -386,6 +400,11 @@ highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
+"GoSpecific
+
+if filereadable(expand("~/dotfiles/go-vim"))
+  source ~/dotfiles/go-vimrc
+endif
 " Buffer
 set hidden
 set autoread
@@ -402,6 +421,7 @@ set smartcase
 set incsearch     " do incremental searching
 nmap <silent> ,/ :nohlsearch<CR>
 
+
 " Leader
 let mapleader = ","
 
@@ -414,7 +434,9 @@ let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
 
 
-set backspace=indent,eol,start
+"set backspace=indent,eol,start
+
+set backspace=2
 set nobackup
 set nowritebackup
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
