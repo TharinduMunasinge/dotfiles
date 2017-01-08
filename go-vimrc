@@ -57,18 +57,19 @@ function! s:my_cr_function()
   return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
   " <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-R>=UltiSnips#ExpandSnippet()"
+"inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-R>=UltiSnips#ExpandSnippet()"
   " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 "inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
   " Close popup by <Space>.
-inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+inoremap <expr><Space> pumvisible() ? "\<C-y>\<Space>" : "\<Space>"
 
 
   " Shell like behavior(not recommended).
-set completeopt+=longest,menuone
+"set completeopt+=longest,menuone
+set completeopt+=longest,menu,preview
 ",menuone
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_auto_select = 0

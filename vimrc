@@ -240,7 +240,7 @@ nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
 " will use completion if not at beginning
 set wildmode=list:longest,list:full
 set complete=.,w,t
-set completeopt=longest,menuone
+"set completeopt=longest,menuone
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 "inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
   "\ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
@@ -329,18 +329,6 @@ endfunction
 
 command! AC :call <SID>CreateRelated()
 
-" YCM
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-let g:ycm_key_select_completion = '<tab>'
-let g:ycm_min_num_of_chars_for_completion=2
-
-" Utilsnipperts
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
 
 
 " auto cmds
@@ -400,11 +388,6 @@ highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
-"GoSpecific
-
-if filereadable(expand("~/dotfiles/go-vim"))
-  source ~/dotfiles/go-vimrc
-endif
 " Buffer
 set hidden
 set autoread
@@ -427,6 +410,8 @@ let mapleader = ","
 
 " ctrlp
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+set wildignore+=*/bin/**
+set wildignore+=*/pkg/**
 
 " NERDTree
 nnoremap <Leader>f :NERDTreeFind<Enter>
@@ -538,7 +523,30 @@ set complete+=kspell
 " Always use vertical diffs
 set diffopt+=vertical
 
+" YCM
+"let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+"let g:SuperTabDefaultCompletionType = '<C-n>'
+"let g:ycm_key_select_completion = '<tab>'
+"let g:ycm_min_num_of_chars_for_completion=2
+
+" Utilsnipperts
+"
+let g:UltiSnipsExpandTrigger = "<c-tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+
+"GoSpecific
+
+if filereadable(expand("~/dotfiles/go-vimrc"))
+  source ~/dotfiles/go-vimrc
+endif
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+map <C-m> i<CR><Esc>h
+
