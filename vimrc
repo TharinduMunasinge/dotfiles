@@ -1,4 +1,4 @@
-set shell=/bin/bash
+set shell=/usr/local/bin/zsh
 runtime macros/matchit.vim
 
 set ttyfast
@@ -41,6 +41,14 @@ map <Leader>a :call RunAllSpecs()<CR>
 map <F10> :NERDTreeToggle<CR>
 " Current file in nerdtree
 map <F9> :NERDTreeFind<CR>
+
+" let NERDTreeIgnore=['\.vim$', '\~$','^dist','^build','^assets','^coverage','^\.idea','^\.git']
+" if exists("g:ctrlp_user_command")
+    " unlet g:ctrlp_user_command
+" endif
+" set wildignore+=*/.git/*,*/dist/*,*/build/*,*/.idea/*,*/coverage/*,*/assets/*
+let g:ctrlp_custom_ignore = 'node_modules\|build\|dist\|assets\|coverage\|.idea\|.git\'
+
 
 " Reduce timeout after <ESC> is recvd. This is only a good idea on fast links.
 set ttimeout
@@ -165,6 +173,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tmuxline#enabled = 0
 
 let g:airline_theme='molokai'
+
+" let g:airline_theme='solarized'
 "'solarized'
 let g:airline_left_sep = '▶'
 let g:airline_right_sep = '◀'
@@ -189,11 +199,17 @@ set t_Co=256
 :set noantialias
 
 " Color scheme
-"set background=dark
-"solarized options
-"let g:solarized_visibility = "high"
-"let g:solarized_contrast = "high"
-"let g:solarized_termcolors=256
+
+syntax on
+set background=dark
+let g:solarized_visibility = "high"
+let g:solarized_termtrans =1
+let g:solarized_contrast = "high"
+let g:solarized_termcolors=256
+set list
+colorscheme solarized
+
+
 "colorscheme moloki
 let g:Powerline_symbols = 'fancy'
 let g:hybrid_custom_term_colors = 1
@@ -201,14 +217,12 @@ let g:molokai_original = 1
 let g:rehash256 = 1
 let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
 let g:molokai_termcolors=256
-colorscheme molokai
-syntax enable
-set background=dark
-"colorscheme solarized
 set encoding=utf-8
 
 " Highlight line number of where cursor currently is
-hi CursorLineNr guifg=#050505
+" hi CursorLineNr guifg=#050505
+highlight CursorLine gui=underline ctermbg=0
+
 
 " Numbers
 set number
@@ -229,12 +243,12 @@ set nossl
 :xnoremap <expr> y (v:register ==# '"' ? '"+' : '') . 'y'
 :xnoremap <expr> Y (v:register ==# '"' ? '"+' : '') . 'Y'
 "nmap oo o<Esc>k
-nmap <C-O> O<Esc>
+" nmap <C-O> O<Esc>
 nmap <CR> o<Esc>
 
 " convert hash rockets
 nmap <leader>rh :%s/\v:(\w+) \=\>/\1:/g<cr>
-
+noremap <Leader>f :Ack <cword><cr>
 " Tab completion
 " will insert tab at beginning of line,
 " will use completion if not at beginning
@@ -261,7 +275,7 @@ inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 
 
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
-let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
+" let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
 " Switch between the last two files
 nnoremap <leader><leader> <c-^>
@@ -286,8 +300,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " configure syntastic syntax checking to check on open as well as save
-let g:syntastic_ruby_checkers = ['mri']
-let g:syntastic_enable_highlighting=0
+" let g:syntastic_ruby_checkers = ['mri']
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
@@ -379,6 +392,8 @@ filetype plugin on
 :let g:easytags_dynamic_files = 1
 :let g:easytags_events = ['BufWritePost']
 
+
+let g:syntastic_enable_highlighting=1
 " Sfiletype plugin onyntactic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -387,19 +402,36 @@ set statusline+=%*
 " Syntastic
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_javascript_checkers = ['eslint']
-
-" let g:syntastic_error_symbol = '❌'
-" let g:syntastic_style_error_symbol = '⁉️'
-" let g:syntastic_warning_symbol = '⚠️'
-" let g:syntastic_style_warning_symbol = '💩'
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint','standard', 'jsxhint', 'mixedindentlint']
+let g:syntastic_javascript_eslint_exec = 'eslint_d'
+ let g:syntastic_error_symbol = 'X'
+ let g:syntastic_style_error_symbol = '⁉️'
+ let g:syntastic_warning_symbol = '⚠️'
+ let g:syntastic_style_warning_symbol = '💩'
+" Autofix entire buffer with eslint_d:
+" nnoremap <leader>e mF:%!eslint_d --stdin --fix-to-stdout<CR>`F
+nnoremap <leader>e mF:%!eslint_d --cache --stdin --fix-to-stdout<CR>`F
+" nnoremap <leader>c mF:%!eslint_d  ---caache --stdin --fix-to-stdout<CR>`F
+" " Autofix visual selection with eslint_d:
+vnoremap <leader>e :!eslint_d --stdin --fix-to-stdout<CR>gv
+vnoremap <leader>t :!eslint_d --stdin --fix-to-stdout<CR>`F
+autocmd FileType javascript set formatprg=prettier-eslint\ --stdin
 
 highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
 
+" vim-hier.
+highlight qf_error_ucurl   gui=undercurl guisp=red  ctermfg=none cterm=undercurl
+highlight qf_warning_ucurl gui=undercurl guisp=blue ctermfg=none cterm=undercurl
+
+" Showmarks.
+highlight ShowMarksHLl cterm=NONE ctermfg=blue ctermbg=black       gui=NONE guifg=blue guibg=black
+highlight ShowMarksHLu cterm=NONE ctermfg=blue ctermbg=lightyellow gui=NONE guifg=blue guibg=black
+highlight ShowMarksHLo cterm=NONE ctermfg=blue ctermbg=black       gui=NONE guifg=blue guibg=black
+highlight ShowMarksHLm cterm=bold ctermfg=blue ctermbg=black       gui=bold guifg=blue guibg=black
 "GoSpecific
 
 if filereadable(expand("~/dotfiles/go-vim"))
@@ -426,7 +458,7 @@ nmap <silent> ,/ :nohlsearch<CR>
 let mapleader = ","
 
 " ctrlp
-let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard | grep -vE "\.(svg|ttf|eot|otf|wof|jpe?g|png|gif)"']
 
 " NERDTree
 nnoremap <Leader>f :NERDTreeFind<Enter>
@@ -538,7 +570,24 @@ set complete+=kspell
 " Always use vertical diffs
 set diffopt+=vertical
 
+nmap <Leader>ha <Plug>GitGutterStageHunk
+nmap <Leader>hr <Plug>GitGutterUndoHunk
+nmap <Leader>hv <Plug>GitGutterPreviewHunk
+
+
+"copy and replace the text with leader
+noremap <Leader>p "0p
+noremap <Leader>P "0P
+vnoremap <Leader>p "0p
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+set foldmethod=indent
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
+" set statusline+=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+

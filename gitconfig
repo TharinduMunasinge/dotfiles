@@ -4,7 +4,7 @@
 [push]
   default = current
 [color]
-	ui = true
+  ui = true
 [alias]
   aa = add --all
   ap = add --patch
@@ -26,6 +26,14 @@
   serve = daemon --verbose --enable=upload-pack --enable=receive-pack --export-all --base-path=.git --reuseaddr --strict-paths .git/
   filelog = log -u
   st = !"git status"
+ # based on: https://gist.github.com/intel352/9761288
+  show-closest-branch = rev-parse --abbrev-ref HEAD
+  # based on: http://stackoverflow.com/questions/3161204/find-the-parent-branch-of-a-git-branch
+  show-closest-parent-branch = !"git show-branch -a --no-color 2> /dev/null | awk -F '[]^~[]' -v current_branch=`git show-closest-branch 2> /dev/null || true` 'BEGIN { rc=1 ; if ( length( current_branch ) == 0 ) { exit } } ( ( index( $1, \"*\" ) > 0 ) && ( length( $2 ) > 0 ) && ( $2 != current_branch ) ) { print $2 ; rc=0 ; exit } END { exit rc }'"
+  # short versions
+  cb = !git show-closest-branch
+  pb = !git show-closest-parent-branch
+  d = difftool
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -34,28 +42,25 @@
 [include]
   path = .gitconfig.local
 [commit]
-	template = /Users/mike/.gitmessage
+  template = /Users/mike/.gitmessage
 [user]
-	name = Tharindu Munasinghe
-	email = tharindu.munasinghe@trycake.com
-[diff]
-    tool = Kaleidoscope
-[difftool "Kaleidoscope"]
-  cmd = ksdiff --partial-changeset --relative-path \"$MERGED\" -- \"$LOCAL\" \"$REMOTE\"
+  name = Tharindu Munasinghe
+  email = tharindu.munasinghe@trycake.com
 [mergetool "Kaleidoscope"]
   cmd = ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
   trustExitCode = true
-[difftool "sourcetree"]
-	cmd = /usr/local/bin/ksdiff -w \"$LOCAL\" \"$REMOTE\"
-	path = 
 [mergetool "sourcetree"]
-	cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
-	trustExitCode = true
+  cmd = /usr/local/bin/ksdiff --merge --output \"$MERGED\" --base \"$BASE\" -- \"$LOCAL\" --snapshot \"$REMOTE\" --snapshot
+  trustExitCode = true
 [credential]
 
 [hub]
-protocol = https
+  protocol = https
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
+  clean = git-lfs clean %f
+  smudge = git-lfs smudge %f
+  required = true
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = false

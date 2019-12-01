@@ -76,5 +76,9 @@ Plugin 'fatih/vim-go'
 Plugin 'rjohnsondev/vim-compiler-go'
 Plugin 'vim-jp/vim-go-extra'
 Plugin 'scrooloose/nerdcommenter'
+Plugin 'szw/vim-maximizer'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'Yggdroot/indentLine'
+" Plugin 'mikelue/vim-maven-plugin'
+
 filetype on
